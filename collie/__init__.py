@@ -3,7 +3,7 @@
 from .config import CollieConfig
 from .models import LlamaForCausalLM, MossForCausalLM, CollieModelForCausalLM, \
     ChatGLMForCausalLM, InternLMForCausalLM, ChatGLM2ForCausalLM, Moss003MoonForCausalLM, \
-    InternLM2ForCausalLM
+    InternLM2ForCausalLM, MistralForCausalLM
 from .callbacks import Callback, HasMonitorCallback, CheckpointCallback, \
     LoadBestModelCallback
 from .module import PipelineGenerationMixin, ColumnParallelLinear, \
@@ -28,7 +28,7 @@ from .metrics import BaseMetric, DecodeMetric, AccuracyMetric, \
     PPLMetric, BleuMetric, ClassifyFPreRecMetric
 from .data import CollieDatasetForClassification, CollieBatchSampler, \
     CollieDataLoader, CollieDatasetForTraining, CollieDatasetForGeneration, \
-    CollieDatasetForPerplexity, CollieDatasetForTemplatedMultiTurnChat
+        CollieDatasetForPerplexity
 from .optim import Lomo, Lion, SophiaG, Adan
 
 __all__ = [
@@ -52,6 +52,7 @@ __all__ = [
     'ChatGLM2ForCausalLM',
     'Moss003MoonForCausalLM',
     'InternLM2ForCausalLM',
+    'MistralForCausalLM',
 
     # modules
     'PipelineGenerationMixin',
@@ -81,8 +82,8 @@ __all__ = [
     'broadcast_tensor',
     'concat_tensor',
     'find_tensors',
-    'BaseProvider',
-    'GradioProvider',
+    'BaseProvider', 
+    'GradioProvider', 
     'BaseMonitor',
     'StepTimeMonitor',
     'TGSMonitor',
@@ -100,24 +101,23 @@ __all__ = [
     "CPUMemoryMonitor",
     "ColliePadder",
     "get_keys_to_not_convert",
-
+    
     # metrics
     'BaseMetric',
-    'DecodeMetric',
-    'AccuracyMetric',
+    'DecodeMetric', 
+    'AccuracyMetric', 
     'PPLMetric',
     'BleuMetric',
     'ClassifyFPreRecMetric',
-
-    # data
-    'CollieDatasetForClassification',
-    'CollieBatchSampler',
-    'CollieDataLoader',
+    
+    #data
+    'CollieDatasetForClassification', 
+    'CollieBatchSampler', 
+    'CollieDataLoader', 
     'CollieDatasetForTraining',
-    'CollieDatasetForTemplatedMultiTurnChat',
     'CollieDatasetForGeneration',
     'CollieDatasetForPerplexity',
-
+    
     # optim
     "Lomo",
     "Lion",

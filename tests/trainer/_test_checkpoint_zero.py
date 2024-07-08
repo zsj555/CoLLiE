@@ -15,7 +15,8 @@ from collie.log import logger
 from collie.utils import env, setup_distribution, ColliePadder
 from collie.controller import Trainer
 from collie.optim import Lomo
-from tests.helpers import create_ds_config, import_class
+sys.path.append('../../tests')
+from helpers import create_ds_config, import_class
 
 def compare(d1, d2, key=""):
     assert type(d1) == type(d2), f"Key: {key}, {type(d1)} vs {type(d2)}"

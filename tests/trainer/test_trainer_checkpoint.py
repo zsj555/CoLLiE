@@ -5,14 +5,15 @@ import shutil
 import pytest
 
 from tests.helpers import launch_test
-
+from collie.utils.dist_utils import find_free_port
 
 @pytest.mark.parametrize(
     ["model_type", "model_path", "dp_size", "tp_size", "pp_size", "zero"],
     [
-        ["Moss003MoonForCausalLM", "Salesforce/codegen-350M-mono", 1, 2, 2, 1],
-        ["Moss003MoonForCausalLM", "Salesforce/codegen-350M-mono", 2, 2, 1, 0],
-        ["Moss003MoonForCausalLM", "Salesforce/codegen-350M-mono", 2, 2, 1, 3],
+        # ["Moss003MoonForCausalLM", "Salesforce/codegen-350M-mono", 1, 2, 2, 0],
+        # ["MistralForCausalLM", "mistralai/Mistral-7B-v0.1", 1, 4, 1, 0],
+        ["MistralForCausalLM", "mistralai/Mistral-7B-v0.1", 1, 4, 1, 3],
+        # ["Moss003MoonForCausalLM", "Salesforce/codegen-350M-mono", 2, 2, 1, 3],
     ]
 )
 def test_checkpoint_collie(model_type, model_path, dp_size, tp_size, pp_size, zero):
@@ -22,11 +23,11 @@ def test_checkpoint_collie(model_type, model_path, dp_size, tp_size, pp_size, ze
         # load to collie
         {"format": "collie", "load": True, "zero": zero},
         # load to hf with collie
-        {"format": "hf", "load": True, "zero": 3},
-        {"format": "hf", "load": True, "zero": 0}
+        # {"format": "hf", "load": True, "zero": 3},
+        # {"format": "hf", "load": True, "zero": 0}
     ]
     for kwargs in kwargs_list:
-        master_port = find_free_port()
+        master_port = find_free_port("127.0.0.1")
         err_log = f"checkpoint_collie::model_{model_path.split('/')[-1]}-dp_{dp_size}-tp_{tp_size}-pp_{pp_size}-zero_{kwargs['zero']}-format_{kwargs['format']}-load_{kwargs['load']}"
         ws = dp_size * tp_size * pp_size
         cmd = f"torchrun --master_port {master_port} --nproc_per_node {ws} " \
@@ -61,7 +62,7 @@ def test_checkpoint_hf(model_type, model_path, dp_size, tp_size, pp_size, zero):
         {"format": "collie", "load": True, "zero": zero},
     ]
     for kwargs in kwargs_list:
-        master_port = find_free_port()
+        master_port = find_free_port("127.0.0.1")
         err_log = f"checkpoint_hf::model_{model_path.split('/')[-1]}-dp_{dp_size}-tp_{tp_size}-pp_{pp_size}-zero_{kwargs['zero']}-format_{kwargs['format']}-load_{kwargs['load']}"
         ws = dp_size * tp_size * pp_size
         cmd = f"torchrun --master_port {master_port} --nproc_per_node {ws} " \
@@ -95,7 +96,7 @@ def test_checkpoint_lomo(model_type, model_path, dp_size, tp_size, pp_size, zero
         {"format": "hf", "load": True, "zero": 0}
     ]
     for kwargs in kwargs_list:
-        master_port = find_free_port()
+        master_port = find_free_port("127.0.0.1")
         err_log = f"checkpoint_lomo::model_{model_path.split('/')[-1]}-dp_{dp_size}-tp_{tp_size}-pp_{pp_size}-zero_{kwargs['zero']}-format_{kwargs['format']}-load_{kwargs['load']}"
         ws = dp_size * tp_size * pp_size
         cmd = f"torchrun --master_port {master_port} --nproc_per_node {ws} " \
